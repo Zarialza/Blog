@@ -1,3 +1,167 @@
+@font-face {
+  font-family: "Lato_Regular";
+  src: url(/public/fonts/Lato/Lato-Regular.ttf) format("truetype");
+}
+
+:root {
+  --black: #1c1c1c;
+  --white: #f9f9f9;
+  --grey: #f2f2f2;
+  --dark-grey: #333;
+  --light-grey: #f5f5f5;
+  --blue: #007bff;
+  --green: #28a745;
+  --red: #dc3545;
+  --yellow: #ffc107;
+  --orange: #fd7e14;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --primary: #007bff;
+
+  --font-size-base: 1rem;
+  --font-size-md: clamp(1.25rem, 0.61vw + 1rem, 1.5rem);
+  --font-size-lg: clamp(1.5rem, 1vw + 1.31rem, 2.11rem);
+  --font-size-xl: clamp(2.44rem, 2.38vw + 1.75rem, 3.44rem);
+
+  --border-radius: 10px;
+}
+
 body {
-  background-color: aqua;
+  font-family: lato_regular, sans-serif;
+  color: var(--black);
+  font-size: var(--font-size-base);
+  background-color: var(--white);
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--black);
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+}
+h2 {
+  font-size: var(--font-size-l);
+}
+h3 {
+  font-size: var(--font-size-md);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+select,
+textarea {
+  font-family: lato_regular, sans-serif;
+  font-size: var(--font-size-base);
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  margin: 0.5rem 0;
+}
+
+.btn {
+  background-color: var(--black);
+  color: var(--white);
+  border: none;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.btn-delete {
+  background-color: var(--red);
+}
+
+/* layout */
+.container {
+  max-width: 982px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.Hero_image {
+  max-height: 528px;
+  filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.25));
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+/* Main Header */
+.header {
+  display: grid;
+  align-items: center;
+
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  padding-top: 10px;
+  grid-template-areas:
+    "logo btn"
+    "nav nav";
+}
+
+@media only screen and (min-width: 768px) {
+  .header {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "logo nav btn";
+  }
+}
+
+.header_logo {
+  grid-area: logo;
+  font-weight: 800;
+  font-size: 25px;
+  text-decoration: none;
+  color: var(--black);
+}
+
+.header_nav {
+  grid-area: nav;
+  display: flex;
+  justify-content: center;
+}
+.header_nav ul {
+  display: flex;
+  gap: 35px;
+}
+.header_nav a {
+  text-decoration: none;
+  color: var(--black);
+  font-weight: 600;
+  transition: 0.255s;
+}
+
+.header_nav a:hover {
+  color: var(--blue);
+}
+
+.header_btn {
+  grid-area: btn;
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+}
+
+.header_btn button {
+  display: flex;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  color: var(--white);
+  font-weight: 400;
+  padding: 5px 10px;
+  background-color: var(--black);
+  transition: 0.255s;
+}
+
+.header_btn button:hover {
+  background-color: var(--blue);
 }
