@@ -9,6 +9,8 @@
     <script type="text/javascript" defer src="/js/script.js"></script>
   </head>
   <body>
-    <%- body %>
+    <%- include('../partials/header.ejs') %>
+    <main class="main"><%- body %></main>
+    <%- include('../partials/footer.ejs') %>
   </body>
 </html>
