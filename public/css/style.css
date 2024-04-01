@@ -194,12 +194,18 @@ textarea {
 /* Card Design */
 .card_wrapper {
   display: flexbox;
-  border: 1px solid var(--black);
+  border: 1px solid var(--grey);
   border-radius: var(--border-radius);
   overflow: hidden;
   width: 185px;
   height: 300px;
   padding: 0px 0px 10px 0px;
+  transition: 0.5s;
+}
+
+.card_wrapper:hover {
+  box-shadow: 0 0 10px rgba(66, 155, 190, 0.616);
+  cursor: pointer;
 }
 
 .blog_title h3 {
@@ -217,4 +223,15 @@ textarea {
   color: var(--grey);
   font-size: 12px;
   text-align: justify;
+}
+
+/* footer design */
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--grey);
+  padding: 10px 0px;
+  font-size: 10px;
 }
