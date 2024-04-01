@@ -142,6 +142,11 @@ textarea {
   color: var(--blue);
 }
 
+.header_nav ul .active {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
 .header_btn {
   grid-area: btn;
   display: flex;
@@ -233,5 +238,7 @@ textarea {
 
   color: var(--grey);
   padding: 10px 0px;
-  font-size: 10px;
+  font-size: 12px;
 }
+
+/* pagination ui */
