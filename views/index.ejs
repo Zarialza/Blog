@@ -12,8 +12,6 @@
 />
 
 <section class="blogcards_wrapper">
-  <%- include('./partials/card.ejs') %> <%- include('./partials/card.ejs') %>
-  <%- include('./partials/card.ejs') %> <%- include('./partials/card.ejs') %>
   <%- include('./partials/card.ejs') %>
 </section>
 <section class="article">
@@ -25,5 +23,8 @@
     </li>
   </ul>
 
-  <a href="#" class="pagination">&lt; View Older Posts</a>
+  <% if (nextPage !== null) { %>
+
+  <a href="/?page=<%= nextPage %>" class="pagination">&lt; View Older Posts</a>
+  <% } %>
 </section>

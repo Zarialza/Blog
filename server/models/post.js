@@ -6,6 +6,10 @@ const postSchema = new schema({
     type: String,
     required: true,
   },
+  blog_img: {
+    type: String,
+    required: true,
+  },
   content: {
     type: String,
     required: true,
