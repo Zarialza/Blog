@@ -1,13 +1,16 @@
-<div class="card_wrapper">
-  <div class="card_img">
-    <img src="/img/blog-img.webp" alt="card_img" width="185px" height="185px" />
+<% data.forEach(POST => { %>
+<a href="/post/<%= POST._id %>">
+  <div class="card_wrapper">
+    <div class="card_img">
+      <img
+        src="<%= POST.blog_img %>"
+        alt="card_img"
+        width="185px"
+        height="185px"
+      />
+    </div>
+    <div class="blog_title"><h3><%= POST.title %></h3></div>
   </div>
-  <div class="blog_title">
-    <h3>This is the first blog.</h3>
-  </div>
-  <span class="publish_date">12 Dec 2023</span>
-  <p class="card_content">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor fugiat
-    dolorem nesciunt illo doloremque, iure
-  </p>
-</div>
+</a>
+
+<% }) %>

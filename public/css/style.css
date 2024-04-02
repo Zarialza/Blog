@@ -199,35 +199,29 @@ textarea {
 /* Card Design */
 .card_wrapper {
   display: flexbox;
-  border: 1px solid var(--grey);
-  border-radius: var(--border-radius);
   overflow: hidden;
   width: 185px;
-  height: 300px;
+  height: auto;
   padding: 0px 0px 10px 0px;
   transition: 0.5s;
 }
 
 .card_wrapper:hover {
-  box-shadow: 0 0 10px rgba(66, 155, 190, 0.616);
   cursor: pointer;
+  .blog_title h3 {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+}
+
+.card_img img {
+  border-radius: var(--border-radius);
 }
 
 .blog_title h3 {
   margin: 5px 10px 0px 5px;
-}
-
-.publish_date {
-  margin: 3px 10px 0px 5px;
-  color: var(--grey);
-  font-size: 12px;
-}
-
-.card_content {
-  margin: 11px 10px 0px 5px;
-  color: var(--grey);
-  font-size: 12px;
-  text-align: justify;
+  text-align: center;
+  transition: 0.5s;
 }
 
 /* footer design */
