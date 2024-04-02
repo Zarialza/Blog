@@ -241,4 +241,31 @@ textarea {
   font-size: 12px;
 }
 
-/* pagination ui */
+/* searchBar */
+.searchBar {
+  visibility: hidden;
+  transform: translateY(-100px);
+  background-color: var(--black);
+  padding: 4px 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.searchBar.open {
+  transform: translateY(0);
+  transition: transform 0.1s;
+}
+
+.searchBar input {
+  margin: 0;
+  padding: 0;
+}
+
+#searchClose {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--dark-grey);
+  padding: 15px;
+}
