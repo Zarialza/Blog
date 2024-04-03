@@ -75,8 +75,6 @@ router.get("/contact", (req, res) => {
   res.render("contact");
 });
 
-module.exports = router;
-
 /**
  * GET /
  * Post: id
@@ -122,3 +120,5 @@ router.post("/search", async (req, res) => {
     console.log(error);
   }
 });
+
+module.exports = router;
