@@ -11,6 +11,11 @@ const PORT = 5000 || process.env.PORT;
 // conect to DB
 connectDB();
 
+// Body parser
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use(express.static("public"));
 
 app.use(expressLayouts);

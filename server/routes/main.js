@@ -76,3 +76,49 @@ router.get("/contact", (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * GET /
+ * Post: id
+ */
+
+router.get("/post/:id", async (req, res) => {
+  try {
+    let slug = req.params.id;
+
+    const data = await Post.findById({ _id: slug });
+    const locals = {
+      title: data.title,
+      description: "Welcome to my blog website",
+    };
+    res.render("post", { locals, data });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+/**
+ * GET /
+ * Post: search
+ */
+
+router.post("/search", async (req, res) => {
+  try {
+    const locals = {
+      title: "Blog Website",
+      description: "Welcome to my blog website",
+    };
+    let searchTerm = req.body.searchTerm;
+    const searchNoSpecialChars = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
+    const data = await Post.find({
+      $or: [
+        { title: { $regex: new RegExp(searchNoSpecialChars, "i") } },
+        { body: { $regex: new RegExp(searchNoSpecialChars, "i") } },
+      ],
+    });
+
+    res.render("search", { data, locals });
+  } catch (error) {
+    console.log(error);
+  }
+});
