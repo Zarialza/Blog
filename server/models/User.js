@@ -1,17 +1,21 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose; // Destructuring to get Schema
 
-const schema = mongoose.Schema;
-const UserSchema = new schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
+  { versionKey: false }
+); // Optional: Disable versionKey if not needed
 
-  password: {
-    type: String,
-    required: true,
-  },
-});
+// Before saving, consider hashing the password with bcrypt in a pre-save hook
 
-module.exports = mongoose.model("user", UserSchema);
+module.exports = mongoose.model("User", userSchema);

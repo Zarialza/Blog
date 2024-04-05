@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../models/post");
-const User = require("../models/post");
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -26,7 +26,7 @@ router.get("/admin", async (req, res) => {
 module.exports = router;
 
 /**
- * GET /
+ * POST /
  * Admin - check login
  */
 
@@ -34,7 +34,7 @@ router.post("/admin", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (req.username === "username" && req.password === "password") {
+    if (req.body.username === "username" && req.body.password === "password") {
       res.send("Logged in!");
     } else {
       res.send("Wrong credentials!");
@@ -46,7 +46,7 @@ router.post("/admin", async (req, res) => {
 });
 
 /**
- * GET /
+ * POST /
  * Admin - check register
  */
 
@@ -57,7 +57,7 @@ router.post("/register", async (req, res) => {
 
     try {
       const user = await User.create({ username, password: hashedPassword });
-      res.status(201).json({ message: "User Creater", user });
+      res.status(201).json({ message: "User Created", user });
     } catch (error) {
       if (error.code === 11000) {
         res.status(409).json({ message: "Username already exists" });
