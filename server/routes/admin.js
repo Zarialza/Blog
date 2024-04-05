@@ -57,14 +57,15 @@ router.post("/register", async (req, res) => {
 
     try {
       const user = await User.create({ username, password: hashedPassword });
-      res.status(201).json({ message: "User Created", user });
+      return res.status(201).json({ message: "User Created", user }); // Return to prevent further execution
     } catch (error) {
       if (error.code === 11000) {
-        res.status(409).json({ message: "Username already exists" });
+        return res.status(409).json({ message: "Username already exists" }); // Return to prevent further execution
       }
-      res.status(500).json({ message: "Error creating user" });
+      return res.status(500).json({ message: "Error creating user" }); // Moved inside catch to prevent execution after response
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ message: "An error occurred" }); // Ensure a response is sent on error
   }
 });

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose; // Destructuring to get Schema
+const Schema = mongoose.Schema; // Destructuring to get Schema
 
 const userSchema = new Schema(
   {
