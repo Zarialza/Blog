@@ -63,9 +63,7 @@ router.post("/admin", async (req, res) => {
       return res.status(401).json({ message: "invalid Credential" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     res.cookie("token", token, { httpOnly: true });
 
     res.redirect("/dashboard");
@@ -92,6 +90,44 @@ router.get("/dashboard", checkAuth, async (req, res) => {
       layout: "../views/layouts/admin",
       data,
     });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+/**
+ * GET /
+ * Admin -New Post
+ */
+router.get("/add-post", checkAuth, async (req, res) => {
+  try {
+    const locals = {
+      title: "Admin",
+      description: "Admin page",
+    };
+
+    const data = await Post.find();
+    res.render("admin/add-post", {
+      locals,
+      data,
+      layout: "../views/layouts/admin",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/add-post", checkAuth, async (req, res) => {
+  try {
+    const newPost = new Post({
+      title: req.body.title,
+      blog_img: req.body.blog_img,
+      content: req.body.content,
+    });
+
+    await Post.create(newPost);
+
+    res.redirect("/dashboard");
   } catch (error) {
     console.log(error);
   }
