@@ -5,6 +5,26 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const multer = require("multer");
+const path = require("path");
+
+// Set storage engine
+const storage = multer.diskStorage({
+  destination: "./public/img",
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+// Init upload
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 }, // Limit file size to 1MB, adjust as needed
+}).single("blog_img"); // 'blog_img' is the name of your file input field
+
 /**
  *
  * Check Login
@@ -118,35 +138,27 @@ router.get("/add-post", checkAuth, async (req, res) => {
 });
 
 router.post("/add-post", checkAuth, async (req, res) => {
-  try {
-    const newPost = new Post({
-      title: req.body.title,
-      blog_img: req.body.blog_img,
-      content: req.body.content,
-    });
+  upload(req, res, async (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      try {
+        console.log(req.file);
+        const newPost = new Post({
+          title: req.body.title,
+          blog_img: req.file ? req.file.filename : "",
+          content: req.body.content,
+        });
+        console.log(newPost);
+        await Post.create(newPost);
 
-    await Post.create(newPost);
-
-    res.redirect("/dashboard");
-  } catch (error) {
-    console.log(error);
-  }
+        // res.redirect("/dashboard");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  });
 });
-
-// router.post("/admin", async (req, res) => {
-//   try {
-//     const { username, password } = req.body;
-
-//     if (req.body.username === "username" && req.body.password === "password") {
-//       res.send("Logged in!");
-//     } else {
-//       res.send("Wrong credentials!");
-//     }
-//     res.redirect("admin");
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
 
 /**
  * POST /

@@ -7,7 +7,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 const connectDB = require("./server/config/db");
-
+const path = require("path");
 const app = express();
 const PORT = 5000 || process.env.PORT;
 
@@ -15,6 +15,8 @@ const PORT = 5000 || process.env.PORT;
 connectDB();
 
 // Body parser
+app.use("/blog_img", express.static(path.join(__dirname, "/public/img")));
+console.log(path.join(__dirname, "/public/img"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
