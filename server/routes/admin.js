@@ -137,7 +137,7 @@ router.get("/add-post", checkAuth, async (req, res) => {
   }
 });
 
-router.post("/add-post", checkAuth, async (req, res) => {
+router.post("/add-post", checkAuth, async (req, res, next) => {
   upload(req, res, async (err) => {
     if (err) {
       console.log(err);
@@ -152,8 +152,9 @@ router.post("/add-post", checkAuth, async (req, res) => {
         console.log(newPost);
         await Post.create(newPost);
 
-        // res.redirect("/dashboard");
+        res.redirect("/dashboard");
       } catch (error) {
+        next(error);
         console.log(error);
       }
     }
@@ -182,6 +183,54 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "An error occurred" }); // Ensure a response is sent on error
+  }
+});
+
+/**
+ * Get /
+ * Admin -New Post
+ */
+router.get("/edit-post/:id", checkAuth, async (req, res) => {
+  try {
+    const locals = {
+      title: "Admin",
+      description: "Admin page",
+    };
+
+    const data = await Post.find({ _id: req.params.id });
+    console.log(data);
+    console.log(data[0].title);
+
+    res.render("admin/edit-post", {
+      locals,
+      data,
+      layout: "../views/layouts/admin",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+/**
+ * PUT /
+ * Admin -New Post
+ */
+router.put("/edit-post/:id", checkAuth, async (req, res) => {
+  try {
+    const locals = {
+      title: "Admin",
+      description: "Admin page",
+    };
+
+    const data = await Post.find(req.params.id, {
+      title: req.body.title,
+      blog_img: req.file ? req.file.filename : "",
+      content: req.body.content,
+    });
+
+    res.redirect(`/edit-post/${req.params.id}`);
+  } catch (error) {
+    console.log(error);
   }
 });
 

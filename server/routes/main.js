@@ -40,33 +40,6 @@ router.get("", async (req, res) => {
   }
 });
 
-// Insert post data
-
-// function insertPostData() {
-//   Post.insertMany([
-//     {
-//       title: "Starting Out",
-//       content:
-//         "This is my first project. I am very excited to work on this project. I hope you like it.",
-//       blog_img: "/img/blog-img.webp",
-//     },
-//     {
-//       title: "Inventory Management System",
-//       content:
-//         "This is my second project. I am very excited to work on this project. I hope you like it.",
-//       blog_img: "/img/IMS.webp",
-//     },
-//     {
-//       title: "E-commerce Website",
-//       content:
-//         "This is my third project. I am very excited to work on this project. I hope you like it.",
-//       blog_img: "/img/Ecom.webp",
-//     },
-//   ]);
-// }
-
-// insertPostData();
-
 router.get("/about", (req, res) => {
   res.render("about");
 });
