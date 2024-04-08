@@ -13,15 +13,15 @@
   enctype="multipart/form-data"
 >
   <label for="title">Title</label>
-  <input type="text" name="title" value="<%= data[0].title %>" />
+  <input type="text" name="title" value="<%= data.title %>" />
 
   <label for="content">Content</label>
   <textarea name="content" placeholder="Enter content" cols="50" rows="10">
-    <%= data[0].content %>
+    <%= data.content %>
 </textarea
   >
   <img
-    src="../img/<%= data[0].blog_img %>"
+    src="../img/<%= data.blog_img %>"
     alt="card_img"
     width="185px"
     height="185px"
@@ -29,5 +29,5 @@
   <label for="blog-img"> Image </label>
   <input type="file" name="blog_img" value="blog_img" />
 
-  <button type="submit" class="btn" value="Update">Add Post</button>
+  <button type="submit" class="btn" value="Update">Update</button>
 </form>

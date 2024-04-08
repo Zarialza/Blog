@@ -47,7 +47,8 @@ router.get("/add-post", checkAuth, getAddPostPage);
 router.post("/add-post", checkAuth, upload, postAddPost);
 router.post("/register", postRegister);
 router.get("/edit-post/:id", checkAuth, getEditPostPage);
-router.put("/edit-post/:id", checkAuth, putEditPost);
+router.put("/edit-post/:id", checkAuth, upload, putEditPost);
+router.delete("/delete-post/:id", checkAuth, deletePost);
 
 async function getAdminPage(req, res) {
   try {
@@ -174,13 +175,25 @@ async function getEditPostPage(req, res) {
 
 async function putEditPost(req, res) {
   try {
-    await Post.findByIdAndUpdate(req.params.id, {
+    const updatedPost = {
       title: req.body.title,
       blog_img: req.file ? req.file.filename : "",
       content: req.body.content,
-    });
+    };
 
-    res.redirect(`/edit-post/${req.params.id}`);
+    await Post.findByIdAndUpdate(req.params.id, updatedPost);
+
+    res.redirect(`/dashboard`);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function deletePost(req, res) {
+  try {
+    await Post.findByIdAndDelete(req.params.id);
+
+    res.redirect("/dashboard");
   } catch (error) {
     console.log(error);
   }
