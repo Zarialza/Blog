@@ -25,10 +25,6 @@ const upload = multer({
   limits: { fileSize: 1000000 }, // Limit file size to 1MB, adjust as needed
 }).single("blog_img"); // 'blog_img' is the name of your file input field
 
-/**
- *
- * Check Login
- */
 const checkAuth = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
@@ -44,12 +40,16 @@ const checkAuth = (req, res, next) => {
   }
 };
 
-/**
- * GET /
- * Admin -login
- */
+router.get("/admin", getAdminPage);
+router.post("/admin", postAdminLogin);
+router.get("/dashboard", checkAuth, getDashboard);
+router.get("/add-post", checkAuth, getAddPostPage);
+router.post("/add-post", checkAuth, upload, postAddPost);
+router.post("/register", postRegister);
+router.get("/edit-post/:id", checkAuth, getEditPostPage);
+router.put("/edit-post/:id", checkAuth, putEditPost);
 
-router.get("/admin", async (req, res) => {
+async function getAdminPage(req, res) {
   try {
     const locals = {
       title: "Admin",
@@ -60,27 +60,16 @@ router.get("/admin", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+}
 
-/**
- * POST /
- * Admin - check login
- */
-
-router.post("/admin", async (req, res) => {
+async function postAdminLogin(req, res) {
   try {
     const { username, password } = req.body;
 
     const user = await User.findOne({ username });
 
-    if (!user) {
-      return res.status(401).json({ message: "invalid Credential" });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({ message: "invalid Credential" });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -90,14 +79,9 @@ router.post("/admin", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+}
 
-/**
- * GET /
- * Admin -dashboard
- */
-
-router.get("/dashboard", checkAuth, async (req, res) => {
+async function getDashboard(req, res) {
   try {
     const data = await Post.find();
     const locals = {
@@ -113,13 +97,9 @@ router.get("/dashboard", checkAuth, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+}
 
-/**
- * GET /
- * Admin -New Post
- */
-router.get("/add-post", checkAuth, async (req, res) => {
+async function getAddPostPage(req, res) {
   try {
     const locals = {
       title: "Admin",
@@ -135,71 +115,52 @@ router.get("/add-post", checkAuth, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+}
 
-router.post("/add-post", checkAuth, async (req, res, next) => {
-  upload(req, res, async (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      try {
-        console.log(req.file);
-        const newPost = new Post({
-          title: req.body.title,
-          blog_img: req.file ? req.file.filename : "",
-          content: req.body.content,
-        });
-        console.log(newPost);
-        await Post.create(newPost);
+async function postAddPost(req, res) {
+  try {
+    const newPost = new Post({
+      title: req.body.title,
+      blog_img: req.file ? req.file.filename : "",
+      content: req.body.content,
+    });
 
-        res.redirect("/dashboard");
-      } catch (error) {
-        next(error);
-        console.log(error);
-      }
-    }
-  });
-});
+    await Post.create(newPost);
 
-/**
- * POST /
- * Admin - check register
- */
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-router.post("/register", async (req, res) => {
+async function postRegister(req, res) {
   try {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
       const user = await User.create({ username, password: hashedPassword });
-      return res.status(201).json({ message: "User Created", user }); // Return to prevent further execution
+      return res.status(201).json({ message: "User Created", user });
     } catch (error) {
       if (error.code === 11000) {
-        return res.status(409).json({ message: "Username already exists" }); // Return to prevent further execution
+        return res.status(409).json({ message: "Username already exists" });
       }
-      return res.status(500).json({ message: "Error creating user" }); // Moved inside catch to prevent execution after response
+      return res.status(500).json({ message: "Error creating user" });
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "An error occurred" }); // Ensure a response is sent on error
+    return res.status(500).json({ message: "An error occurred" });
   }
-});
+}
 
-/**
- * Get /
- * Admin -New Post
- */
-router.get("/edit-post/:id", checkAuth, async (req, res) => {
+async function getEditPostPage(req, res) {
   try {
     const locals = {
       title: "Admin",
       description: "Admin page",
     };
 
-    const data = await Post.find({ _id: req.params.id });
-    console.log(data);
-    console.log(data[0].title);
+    const data = await Post.findById(req.params.id);
 
     res.render("admin/edit-post", {
       locals,
@@ -209,20 +170,11 @@ router.get("/edit-post/:id", checkAuth, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+}
 
-/**
- * PUT /
- * Admin -New Post
- */
-router.put("/edit-post/:id", checkAuth, async (req, res) => {
+async function putEditPost(req, res) {
   try {
-    const locals = {
-      title: "Admin",
-      description: "Admin page",
-    };
-
-    const data = await Post.find(req.params.id, {
+    await Post.findByIdAndUpdate(req.params.id, {
       title: req.body.title,
       blog_img: req.file ? req.file.filename : "",
       content: req.body.content,
@@ -232,6 +184,6 @@ router.put("/edit-post/:id", checkAuth, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
+}
 
 module.exports = router;
