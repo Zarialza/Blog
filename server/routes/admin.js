@@ -49,6 +49,7 @@ router.post("/register", postRegister);
 router.get("/edit-post/:id", checkAuth, getEditPostPage);
 router.put("/edit-post/:id", checkAuth, upload, putEditPost);
 router.delete("/delete-post/:id", checkAuth, deletePost);
+router.get("/logout", LogOut);
 
 async function getAdminPage(req, res) {
   try {
@@ -194,6 +195,15 @@ async function deletePost(req, res) {
     await Post.findByIdAndDelete(req.params.id);
 
     res.redirect("/dashboard");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function LogOut(req, res) {
+  try {
+    res.clearCookie("token");
+    res.redirect("/");
   } catch (error) {
     console.log(error);
   }
